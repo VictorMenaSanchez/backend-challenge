@@ -1,0 +1,47 @@
+CREATE DATABASE IF NOT EXISTS backendchallenge;
+USE backendchallenge;
+
+CREATE TABLE artists (
+    id CHAR(36) NOT NULL,
+    spotify_id VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_artist_spotify_id (spotify_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE albums (
+    id CHAR(36) NOT NULL,
+    spotify_id VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    release_date DATE DEFAULT NULL,
+    image_url VARCHAR(500) DEFAULT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_album_spotify_id (spotify_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE album_artists (
+    album_id CHAR(36) NOT NULL,
+    artist_id CHAR(36) NOT NULL,
+    PRIMARY KEY (album_id, artist_id),
+    CONSTRAINT fk_album FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_artist FOREIGN KEY (artist_id) REFERENCES artists(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE playlists (
+    id CHAR(36) NOT NULL,
+    spotify_id VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(1000) DEFAULT NULL,
+    image_url VARCHAR(500) DEFAULT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_playlist_spotify_id (spotify_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE categories (
+    id CHAR(36) NOT NULL,
+    spotify_id VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    icon_url VARCHAR(500) DEFAULT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_category_spotify_id (spotify_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
