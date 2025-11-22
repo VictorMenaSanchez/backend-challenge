@@ -27,10 +27,17 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	runtimeOnly("org.postgresql:postgresql")
+    //Postgre da error, sigo con MySQL
+	//runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    //Le digo a gradle que descargue el driver JDBC de MYSQL
+
+    implementation("com.mysql:mysql-connector-j:8.1.0")
+
+
 }
 
 kotlin {
