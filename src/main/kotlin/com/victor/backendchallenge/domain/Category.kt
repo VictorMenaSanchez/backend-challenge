@@ -6,6 +6,7 @@ import java.util.UUID
 @Entity
 data class Category(
     @Id
+    @Column(columnDefinition = "CHAR(36)")
     @GeneratedValue
     val id: UUID? = null,
 

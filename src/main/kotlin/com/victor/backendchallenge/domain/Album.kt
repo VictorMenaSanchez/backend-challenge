@@ -7,12 +7,14 @@ import java.util.UUID
 data class Album(
     @Id
     @GeneratedValue
+    @Column(columnDefinition = "CHAR(36)")
+
     val id: UUID? = null,
 
     val spotifyId: String,
     val name: String,
-    val releaseDate: String,
-    val imageUrl: String,
+    val releaseDate: String?,
+    val imageUrl: String?,
 
     @ManyToMany
     @JoinTable(

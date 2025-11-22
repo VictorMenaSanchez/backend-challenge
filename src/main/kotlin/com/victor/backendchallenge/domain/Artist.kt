@@ -7,8 +7,10 @@ import java.util.UUID
 data class Artist(
     @Id
     @GeneratedValue
-    val id: UUID? = null,
+    @Column(columnDefinition = "CHAR(36)")
 
+    val id: UUID? = null,
+    @Column(name = "spotify_id")
     val spotifyId: String,
     val name: String,
 
