@@ -1,6 +1,7 @@
 package com.victor.backendchallenge.service
 
 import kotlinx.coroutines.reactor.awaitSingle
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.BodyInserters
@@ -44,7 +45,8 @@ data class SpotifyCategory(
 //Servicio
 @Service
 class SpotifyService(
-    private val spotifyWebClient: WebClient // inyectado desde WebClientConfig
+    @Qualifier("spotifyWebClient")
+    private val spotifyWebClient: WebClient
 ) {
 
     @Value("\${spotify.client.id}")
@@ -52,6 +54,12 @@ class SpotifyService(
 
     @Value("\${spotify.client.secret}")
     private lateinit var clientSecret: String
+
+    // Ejemplo de uso
+    fun printCredentials() {
+        println("Client ID: $clientId")
+        println("Client Secret: $clientSecret")
+    }
 
     private var tokenCache: SpotifyToken? = null
 

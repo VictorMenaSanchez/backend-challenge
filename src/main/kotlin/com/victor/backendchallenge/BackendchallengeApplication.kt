@@ -1,5 +1,6 @@
 package com.victor.backendchallenge
 
+import com.victor.backendchallenge.service.SpotifyService
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
@@ -9,6 +10,12 @@ class BackendchallengeApplication
 fun main(args: Array<String>) {
     println("Hello there!")
 
-	runApplication<BackendchallengeApplication>(*args)
+    //Guardo el texto
+    val context = runApplication<BackendchallengeApplication>(*args)
 
+    //Cojo el bean de spotify sevice
+    val spotifyService = context.getBean(SpotifyService::class.java)
+
+    //Llamo al metodo
+    spotifyService.printCredentials()
 }
