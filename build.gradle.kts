@@ -37,6 +37,11 @@ dependencies {
 
     implementation("com.mysql:mysql-connector-j:8.1.0")
 
+    //Este proporciona el webclient
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    //Este permite usar coroutines de kotlin con el WebClient de Spring
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
 
 }
 
@@ -55,3 +60,4 @@ allOpen {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
