@@ -127,6 +127,7 @@ class SpotifyService(
     }
 
     //Obtener Featured Playlists
+    @GetMapping("/featured-playlists")
     suspend fun getFeaturedPlaylists(): List<SpotifyPlaylist> {
         val token = getToken()
         val response = spotifyWebClient.get()
@@ -150,6 +151,7 @@ class SpotifyService(
     }
 
     //Categories
+    @GetMapping("/categories")
     suspend fun getCategories(): List<SpotifyCategory> {
         val token = getToken()
         val response = spotifyWebClient.get()
