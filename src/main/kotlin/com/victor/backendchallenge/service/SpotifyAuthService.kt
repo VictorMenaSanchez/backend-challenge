@@ -9,6 +9,8 @@ import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
 import java.time.Instant
@@ -47,6 +49,7 @@ data class SpotifyCategory(
     val icons: List<Map<String, Any>>
 )
 
+
 //Servicio y Controlador
 //Indica que maneja peticiones REST
 @RestController
@@ -55,8 +58,14 @@ data class SpotifyCategory(
 //Mantengo la inyección de dependencias como webclient
 @Service
 class SpotifyService(
+
+    // Este WebClient se usa SOLO para token (accounts.spotify.com)
     @Qualifier("spotifyWebClient")
-    private val spotifyWebClient: WebClient
+    private val spotifyWebClient: WebClient,
+
+    // Nuevo WebClient SOLO para API (api.spotify.com)
+    @Qualifier("spotifyApiWebClient")
+    private val spotifyApiWebClient: WebClient
 ) {
 
     @Value("\${spotify.client.id}")
@@ -82,7 +91,7 @@ class SpotifyService(
         }
 
         val response = spotifyWebClient.post()
-            .uri("https://accounts.spotify.com/api/token")
+            .uri("/api/token")  // YA NO USAMOS URL COMPLETA
             .headers { headers ->
                 headers.setBasicAuth(clientId, clientSecret)
             }
@@ -105,8 +114,13 @@ class SpotifyService(
     @GetMapping("/new-releases")
     suspend fun getNewReleases(): List<SpotifyAlbum> {
         val token = getToken()
-        val response = spotifyWebClient.get()
-            .uri("https://api.spotify.com/v1/browse/new-releases")
+        val response = spotifyApiWebClient.get()
+            .uri { uriBuilder ->
+                uriBuilder
+                    .path("/browse/featured-playlists")
+                    .queryParam("country", "ES")//Especifico un país para que funcione
+                    .build()
+            }
             .headers { headers ->
                 headers.setBearerAuth(token)
             }
@@ -130,8 +144,8 @@ class SpotifyService(
     @GetMapping("/featured-playlists")
     suspend fun getFeaturedPlaylists(): List<SpotifyPlaylist> {
         val token = getToken()
-        val response = spotifyWebClient.get()
-            .uri("https://api.spotify.com/v1/browse/featured-playlists")
+        val response = spotifyApiWebClient.get()
+            .uri("/browse/featured-playlists")
             .headers { headers ->
                 headers.setBearerAuth(token)
             }
@@ -154,8 +168,8 @@ class SpotifyService(
     @GetMapping("/categories")
     suspend fun getCategories(): List<SpotifyCategory> {
         val token = getToken()
-        val response = spotifyWebClient.get()
-            .uri("https://api.spotify.com/v1/browse/categories")
+        val response = spotifyApiWebClient.get()
+            .uri("/browse/categories")
             .headers { headers ->
                 headers.setBearerAuth(token)
             }
@@ -172,4 +186,40 @@ class SpotifyService(
             )
         }
     }
+
+    // Obtener un álbum por ID
+    @GetMapping("/albums/{id}")
+    suspend fun getAlbumById(@PathVariable id: String): Map<String, Any> {
+        val token = getToken()
+
+        val response = spotifyApiWebClient.get()
+            .uri("/albums/$id")
+            .headers { it.setBearerAuth(token) }
+            .retrieve()
+            .bodyToMono(Map::class.java)
+            .awaitSingle()
+
+        return response as Map<String, Any>
+    }
+
+
+    // Alias del endpoint Featured Playlists
+    @GetMapping("/playlists/featured")
+    suspend fun getFeaturedPlaylistsAlias(): List<SpotifyPlaylist> {
+        return getFeaturedPlaylists()
+    }
+
+
+    // Endpoint ADMIN — de momento SOLO dice “ok”
+    @PostMapping("/admin/sync")
+    suspend fun syncData(): Map<String, String> {
+
+        // Implementar
+        //Llamar a getCategories()
+        //Llamar a getFeaturedPlaylists()
+        //Guardar en MySQL usando repositorios
+
+        return mapOf("status" to "EJEMPLO sincronización")
+    }
+
 }

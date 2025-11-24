@@ -15,4 +15,12 @@ class WebClientConfig {
             .baseUrl("https://accounts.spotify.com")
             .build()
     }
+
+    @Bean
+    @Qualifier("spotifyApiWebClient")
+    fun spotifyApiClient(): WebClient {
+        return WebClient.builder()
+            .baseUrl("https://api.spotify.com/v1")
+            .build()
+    }
 }
