@@ -1,14 +1,18 @@
 package com.victor.backendchallenge.controller
 
-import com.victor.backendchallenge.service.AdminService
-import org.springframework.web.bind.annotation.*
+import com.victor.backendchallenge.service.SpotifySyncService
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/admin")
 class AdminController(
-    private val adminService: AdminService
+    private val spotifySyncService: SpotifySyncService
 ) {
-
     @PostMapping("/sync")
-    fun syncSpotifyData() = adminService.syncSpotify()
+    suspend fun syncData(): Map<String, String> {
+        spotifySyncService.syncAllData()
+        return mapOf("status" to "ok")
+    }
 }

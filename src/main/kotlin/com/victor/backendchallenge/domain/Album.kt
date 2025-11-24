@@ -22,5 +22,6 @@ data class Album(
         joinColumns = [JoinColumn(name = "album_id")],
         inverseJoinColumns = [JoinColumn(name = "artist_id")]
     )
-    val artists: MutableSet<Artist> = mutableSetOf()
+    val artists: MutableSet<Artist> = mutableSetOf(),
+    val artistName: String
 )
