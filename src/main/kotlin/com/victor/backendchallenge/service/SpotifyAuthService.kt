@@ -1,5 +1,10 @@
 package com.victor.backendchallenge.service
 
+//Imports para usar esta clase a modo de controlador
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -42,7 +47,12 @@ data class SpotifyCategory(
     val icons: List<Map<String, Any>>
 )
 
-//Servicio
+//Servicio y Controlador
+//Indica que maneja peticiones REST
+@RestController
+//IMPORTANTE: Define la URL base para el endpoint
+@RequestMapping("/api/spotify")
+//Mantengo la inyección de dependencias como webclient
 @Service
 class SpotifyService(
     @Qualifier("spotifyWebClient")
@@ -91,6 +101,8 @@ class SpotifyService(
     }
 
     //Obtener New Releases (Albums)
+    //Defino endpoint get
+    @GetMapping("/new-releases")
     suspend fun getNewReleases(): List<SpotifyAlbum> {
         val token = getToken()
         val response = spotifyWebClient.get()
