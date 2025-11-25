@@ -87,6 +87,43 @@ El diseño utiliza un patrón común de identificadores:
 
 El modelo está listo para expandirse (ej. añadiendo una relación entre `playlists` y otras entidades).
 
+## Carpeta domain
+
+### Contenido
+
+En esta carpeta están los archivos con los modelos y entidades JPA que representan datos en la base de datos.
+
+* Album.kt
+* Artist.kt
+* Category.kt
+* Playlist.ky
+
+## Carpeta repository
+
+### COntenido
+
+Esta carpeta contiene la lógica de negocio.
+Aquí leo Spotify, transformo los datos con mappers y llamo a los repositorios guardados con:
+
+* AlbumRepository.kt
+* ArtistRepository.kt
+* CategoryRepository.kt
+* PLayListRepository.kt
+
+## Carpeta controllers
+
+### Contenido
+
+Endpoints REST que exponen datos a clientes(Postman).
+
+* AdminController.kt
+* AlbumController.kt
+* CategoryController.kt
+* PlayListController.kt
+
+## Carpeta services
+
+
 
 
 
