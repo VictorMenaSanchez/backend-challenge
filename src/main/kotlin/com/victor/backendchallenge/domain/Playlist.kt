@@ -9,7 +9,6 @@ data class Playlist(
     @Column(columnDefinition = "CHAR(36)")
     @GeneratedValue
     val id: UUID? = null,
-
     val spotifyId: String,
     val name: String,
     val description: String? = null,

@@ -10,7 +10,6 @@ data class Album(
     @Column(columnDefinition = "CHAR(36)")
 
     val id: UUID? = null,
-
     val spotifyId: String,
     val name: String,
     val releaseDate: String?,

@@ -2,8 +2,8 @@ package com.victor.backendchallenge.service
 
 import com.victor.backendchallenge.domain.toEntity
 import com.victor.backendchallenge.repository.AlbumRepository
-import com.victor.backendchallenge.repository.PlaylistRepository
 import com.victor.backendchallenge.repository.CategoryRepository
+import com.victor.backendchallenge.repository.PlaylistRepository
 import org.springframework.stereotype.Service
 
 @Service
