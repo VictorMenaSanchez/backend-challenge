@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 class SpotifySyncService(
     private val spotifyService: SpotifyService,
-    private val albumRepository: AlbumRepository,
+    val albumRepository: AlbumRepository,
     private val playlistRepository: PlaylistRepository,
     private val categoryRepository: CategoryRepository
 ) {

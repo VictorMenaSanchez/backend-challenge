@@ -5,13 +5,15 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.boot.runApplication
 
 @SpringBootApplication
 class BackendchallengeApplication
-@Bean
+
 fun main(args: Array<String>) {
     runApplication<BackendchallengeApplication>(*args)
 }
+
 //fun main(args: Array<String>) {
   //  println("Hello there!")
 

@@ -82,6 +82,15 @@ class SpotifyService(
 
     private var tokenCache: SpotifyToken? = null
 
+    //Test token
+
+    @GetMapping("/test-token")
+    suspend fun testToken(): String {
+        val token = getToken()
+        return token.take(20) // los primeros 20 chars del token
+    }
+
+
     //Obtener token
     private suspend fun getToken(): String {
         tokenCache?.let {
