@@ -1,4 +1,8 @@
-CREATE DATABASE IF NOT EXISTS backendchallenge;
+DROP DATABASE IF EXISTS backendchallenge;
+CREATE DATABASE backendchallenge
+    DEFAULT CHARACTER SET utf8mb4
+    DEFAULT COLLATE utf8mb4_unicode_ci;
+
 USE backendchallenge;
 
 CREATE TABLE artist (
@@ -7,7 +11,9 @@ CREATE TABLE artist (
     name VARCHAR(255) NOT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY uq_artist_spotify_id (spotify_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE album (
     id CHAR(36) NOT NULL,
@@ -17,17 +23,23 @@ CREATE TABLE album (
     image_url VARCHAR(500) DEFAULT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY uq_album_spotify_id (spotify_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE album_artist (
     album_id CHAR(36) NOT NULL,
     artist_id CHAR(36) NOT NULL,
     PRIMARY KEY (album_id, artist_id),
-    CONSTRAINT fk_album FOREIGN KEY (album_id) REFERENCES album(id)
+    CONSTRAINT fk_album FOREIGN KEY (album_id)
+        REFERENCES album(id)
         ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_artist FOREIGN KEY (artist_id) REFERENCES artist(id)
+    CONSTRAINT fk_artist FOREIGN KEY (artist_id)
+        REFERENCES artist(id)
         ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE playlist (
     id CHAR(36) NOT NULL,
@@ -37,7 +49,9 @@ CREATE TABLE playlist (
     image_url VARCHAR(500) DEFAULT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY uq_playlist_spotify_id (spotify_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE category (
     id CHAR(36) NOT NULL,
@@ -46,4 +60,8 @@ CREATE TABLE category (
     icon_url VARCHAR(500) DEFAULT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY uq_category_spotify_id (spotify_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8mb4 
+  COLLATE=utf8mb4_unicode_ci;
+
+
