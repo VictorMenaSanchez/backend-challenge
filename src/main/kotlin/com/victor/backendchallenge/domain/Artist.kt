@@ -7,9 +7,9 @@ import java.util.*
 @Table(name = "artists")
 data class Artist(
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "CHAR(36)")
-    val id: UUID? = null,
+    var id: String? = null,
 
     @Column(nullable = false, unique = true)
     val spotifyId: String,

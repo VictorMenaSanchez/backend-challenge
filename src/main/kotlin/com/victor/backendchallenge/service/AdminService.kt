@@ -1,11 +1,11 @@
 package com.victor.backendchallenge.service
 
+import com.victor.backendchallenge.domain.Album
 import com.victor.backendchallenge.domain.toEntity
 import com.victor.backendchallenge.repository.AlbumRepository
 import com.victor.backendchallenge.repository.ArtistRepository
 import com.victor.backendchallenge.repository.PlaylistRepository
 import com.victor.backendchallenge.repository.CategoryRepository
-import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -18,36 +18,42 @@ class AdminService(
     private val categoryRepository: CategoryRepository
 ) {
 
+    /**
+     * Sincroniza la información de Spotify a la base de datos.
+     * Guarda artistas, álbumes, playlists y categorías nuevas.
+     */
     @Transactional
     suspend fun syncSpotify(): String {
-        // Albums
+
+        // 1️⃣ Obtener nuevos lanzamientos
         val spotifyAlbums = spotifyClient.getNewReleases()
-        spotifyAlbums.forEach { dto ->
-            val album = dto.toEntity()
-            // Guardar artistas primero
-            album.artists.forEach { artist ->
-                if (artistRepository.findBySpotifyId(artist.spotifyId) == null) {
-                    artistRepository.save(artist)
-                }
+
+        spotifyAlbums.forEach { albumDto ->
+
+            // 1a. Guardar artistas si no existen
+            val artistEntities = albumDto.artists.map { artistDto ->
+                artistRepository.findBySpotifyId(artistDto.id)
+                    ?: artistRepository.save(artistDto.toEntity())
             }
-            if (albumRepository.findBySpotifyId(album.spotifyId) == null) {
-                albumRepository.save(album)
+
+            // 1b. Guardar álbum si no existe
+            if (albumRepository.findBySpotifyId(albumDto.id) == null) {
+                val albumEntity = albumDto.toEntity(artistEntities)
+                albumRepository.save(albumEntity)
             }
         }
 
-        // Playlists
-        val spotifyPlaylists = spotifyClient.getFeaturedPlaylists()
-        spotifyPlaylists.forEach { dto ->
-            if (playlistRepository.findBySpotifyId(dto.id) == null) {
-                playlistRepository.save(dto.toEntity())
+        // 2️⃣ Guardar playlists destacadas
+        spotifyClient.getFeaturedPlaylists().forEach { playlistDto ->
+            if (playlistRepository.findBySpotifyId(playlistDto.id) == null) {
+                playlistRepository.save(playlistDto.toEntity())
             }
         }
 
-        // Categories
-        val spotifyCategories = spotifyClient.getCategories()
-        spotifyCategories.forEach { dto ->
-            if (categoryRepository.findBySpotifyId(dto.id) == null) {
-                categoryRepository.save(dto.toEntity())
+        // 3️⃣ Guardar categorías
+        spotifyClient.getCategories().forEach { categoryDto ->
+            if (categoryRepository.findBySpotifyId(categoryDto.id) == null) {
+                categoryRepository.save(categoryDto.toEntity())
             }
         }
 
