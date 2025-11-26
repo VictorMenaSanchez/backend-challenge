@@ -1,6 +1,6 @@
 package com.victor.backendchallenge.controller
 
-import com.victor.backendchallenge.domain.Album
+import com.victor.backendchallenge.dto.AlbumDto
 import com.victor.backendchallenge.service.AlbumService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -13,13 +13,13 @@ class AlbumController(private val albumService: AlbumService) {
     fun getNewReleases(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") size: Int
-    ): ResponseEntity<List<Album>> {
-        val albums: List<Album> = albumService.getNewReleases(page, size)
+    ): ResponseEntity<List<AlbumDto>> {
+        val albums: List<AlbumDto> = albumService.getNewReleases(page, size)
         return ResponseEntity.ok(albums)
     }
 
     @GetMapping("/{id}")
-    fun getAlbumById(@PathVariable id: String): ResponseEntity<Album> {
+    fun getAlbumById(@PathVariable id: String): ResponseEntity<AlbumDto> {
         val album = albumService.getAlbumById(id)
         return if (album != null) ResponseEntity.ok(album) else ResponseEntity.notFound().build()
     }

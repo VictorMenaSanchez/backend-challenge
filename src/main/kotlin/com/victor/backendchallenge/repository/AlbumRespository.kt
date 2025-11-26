@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface AlbumRepository : JpaRepository<Album, UUID> {
+interface AlbumRepository : JpaRepository<Album, String> {
     fun findBySpotifyId(spotifyId: String): Album?
 }
